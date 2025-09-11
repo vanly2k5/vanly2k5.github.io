@@ -1,2 +1,3 @@
 # vanly2k5.github.io
-My personal website
+study github is really fun
+
