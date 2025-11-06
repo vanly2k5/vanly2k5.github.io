@@ -1,0 +1,6 @@
+p {
+    text-transform: uppercase;
+    /* This will make all paragraph text uppercase */
+    color: blue;
+    text: shadow 0 0 5px gray;
+}
