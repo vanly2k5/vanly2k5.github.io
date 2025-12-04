@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Load Event Example</title>
+  <script>
+    // Works: attached to window
+    window.addEventListener("load", function() {
+      console.log("Window loaded!");
+    });
+
+    // Works: attached to image element (fires when image finishes loading)
+    document.addEventListener("DOMContentLoaded", function() {
+      const img = document.getElementById("myImg");
+      img.addEventListener("load", function() {
+        console.log("Image loaded!");
+      }, true); // capture phase
+    });
+
+    // Will NOT work: bubbling phase only
+    document.addEventListener("load", function() {
+      console.log("This will not fire.");
+    }, false); // bubbling
+  </script>
+</head>
+<body>
+  <img id="myImg" src="https://via.placeholder.com/150">
+</body>
+</html>
