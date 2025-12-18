@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form đăng ký người dùng</title>
+<style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+.form-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 320px;
+    }
+
+.form-container label {
+      font-weight: bold;
+    }
+.form-container input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+.strength-indicator {
+      font-size: 0.9em;
+      font-weight: bold;
+      min-height: 20px;
+    }
+.weak { color: #d93025; }     
+    .medium { color: #ea8600; }  
+    .strong { color: #137333; }  
+button {
+      padding: 10px;
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+button:hover {
+      background: #0056b3;
+    }
+.hint {
+      font-size: 0.85em;
+      color: #555;
+    }
+.error {
+      color: #d93025;
+      font-size: 0.9em;
+    }
+</style>
+</head>
+<body>
+    <form class="form-container" id="registrationForm" novalidate>
+    <label for="username">Tên người dùng</label>
+    <input type="text" id="username" name="username" required placeholder="Nhập 5–15 ký tự" />
+    <div class="hint">Độ dài từ 5 đến 15 ký tự.</div>
+
+    <label for="password">Mật khẩu</label>
+    <input type="password" id="password" name="password" required placeholder="Có chữ và số" />
+    <div id="strength" class="strength-indicator"></div>
+    <div class="hint">Phải chứa cả chữ cái và chữ số.</div>
+
+    <label for="profilePic">Ảnh đại diện</label>
+    <input type="file" id="profilePic" name="profilePic" accept=".jpg,.jpeg,.png" required />
+    <div class="hint">Chỉ chấp nhận tệp JPG hoặc PNG.</div>
+
+    <button type="submit">Đăng ký</button>
+    <div id="formError" class="error" aria-live="polite"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    const strength = document.getElementById('strength');
+    const profilePic = document.getElementById('profilePic');
+    const formError = document.getElementById('formError');
+
+function evaluateStrength(val) {
+      const hasLetters = /[a-zA-Z]/.test(val);
+      const hasNumbers = /[0-9]/.test(val);
+
+if (val.length < 6 || (hasLetters && !hasNumbers) || (!hasLetters && hasNumbers)) {
+        return 'weak';
+      } else if (hasLetters && hasNumbers && val.length < 10) {
+        return 'medium';
+      } else if (hasLetters && hasNumbers && val.length >= 10) {
+        return 'strong';
+      }
+      return 'weak';
+    }
+    password.addEventListener('input', () => {
+      const val = password.value.trim();
+      const level = evaluateStrength(val);
+
+      if (!val) {
+        strength.textContent = '';
+        strength.className = 'strength-indicator';
+        return;
+      }
+
+      if (level === 'weak') {
+        strength.textContent = 'Yếu';
+        strength.className = 'strength-indicator weak';
+      } else if (level === 'medium') {
+        strength.textContent = 'Trung bình';
+        strength.className = 'strength-indicator medium';
+      } else {
+        strength.textContent = 'Mạnh';
+        strength.className = 'strength-indicator strong';
+      }
+    });
+
+form.addEventListener('submit', (e) => {
+      formError.textContent = '';
+
+const nameVal = username.value.trim();
+      if (nameVal.length < 5 || nameVal.length > 15) {
+        e.preventDefault();
+        formError.textContent = 'Tên người dùng phải từ 5 đến 15 ký tự.';
+        username.focus();
+        return;
+      }
+ const passVal = password.value;
+      const hasLetters = /[a-zA-Z]/.test(passVal);
+      const hasNumbers = /[0-9]/.test(passVal);
+      if (!(hasLetters && hasNumbers)) {
+        e.preventDefault();
+        formError.textContent = 'Mật khẩu phải chứa cả chữ cái và chữ số.';
+        password.focus();
+        return;
+      }
+const file = profilePic.files[0];
+      if (!file) {
+        e.preventDefault();
+        formError.textContent = 'Vui lòng chọn ảnh đại diện.';
+        profilePic.focus();
+        return;
+      }
+      const type = file.type.toLowerCase();
+      if (type !== 'image/jpeg' && type !== 'image/png') {
+        e.preventDefault();
+        formError.textContent = 'Ảnh đại diện phải là tệp JPG hoặc PNG.';
+        profilePic.value = '';
+        profilePic.focus();
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
