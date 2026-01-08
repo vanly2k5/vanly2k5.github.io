@@ -154,7 +154,7 @@ const file = profilePic.files[0];
       const type = file.type.toLowerCase();
       if (type !== 'image/jpeg' && type !== 'image/png') {
         e.preventDefault();
-        formError.textContent = 'Ảnh đại diện phải là tệp JPG hoặc PNG.';
+        formError.textContent = 'Chỉ chấp nhận tệp JPG hoặc PNG.';
         profilePic.value = '';
         profilePic.focus();
         return;
