@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Registration Form</title>
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      gap: 10px;
+      margin: 0 auto;
+    }
+    .strength {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <form id="registerForm">
+    <label>Username:
+      <input type="text" id="username" required>
+    </label>
+    <label>Password:
+      <input type="password" id="password" required>
+    </label>
+    <span id="strength" class="strength"></span>
+    <label>Profile Picture:
+      <input type="file" id="profilePic" accept=".jpg,.png" required>
+    </label>
+    <button type="submit">Register</button>
+  </form>
+
+  <script>
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const strength = document.getElementById("strength");
+
+    password.addEventListener("input", () => {
+      const val = password.value;
+      if (val.length < 6) strength.textContent = "Weak";
+      else if (/[0-9]/.test(val) && /[a-zA-Z]/.test(val)) strength.textContent = "Strong";
+      else strength.textContent = "Medium";
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", e => {
+      if (username.value.length < 5 || username.value.length > 15) {
+        alert("Username must be 5-15 characters");
+        e.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>
